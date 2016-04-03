@@ -8,7 +8,12 @@ class ArtistsController < ApplicationController
   end
 
   def new
-    @artist = Artist.new
+    @pref = Preference.first_or_create(allow_create_artists: false, allow_create_songs: false)
+    if @pref.allow_create_songs && @pref.allow_create_artists
+      @artist = Artist.new
+    else
+      redirect_to artists_path
+    end
   end
 
   def create
